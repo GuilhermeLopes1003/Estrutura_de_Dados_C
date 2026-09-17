@@ -4,9 +4,10 @@
 
 int main()
 {
-    Lista *L;
-    L = InicializaLista();
-    L = CriaLista();
+    printf("\n\n Bem Vindo!-!-!-!-!-!-!-!-!-! Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratrio !-!-!-!-!-!-!-!-!-!\n");
+    Lista *lista_manuntencao;
+    lista_manuntencao = InicializaLista();
+    lista_manuntencao = CriaLista();
 
     int opcao;
     Manutencao dados;
@@ -43,7 +44,7 @@ int main()
                 printf("Periodo (dias): ");
                 scanf("%d", &dados.periodo);
 
-                inserir(L, dados);
+                inserir(lista_manuntencao, dados);
                 break;
 
             case 2:

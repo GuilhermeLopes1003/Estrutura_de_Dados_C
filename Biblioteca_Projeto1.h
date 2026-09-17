@@ -104,6 +104,9 @@ void inserir(Lista *L, Manutencao dados)
             }
         }
     }
+    printf("\n=================================================================\n");
+    printf("\n\n    Manuntencao do Equipamento Adicionado com Sucesso!");
+    printf("\n=================================================================\n");
 }
 
 
