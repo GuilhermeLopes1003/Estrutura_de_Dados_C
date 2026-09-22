@@ -4,7 +4,7 @@
 
 int main()
 {
-    printf("\n\n Bem Vindo!-!-!-!-!-!-!-!-!-! Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratrio !-!-!-!-!-!-!-!-!-!\n");
+    printf("\n\n Bem Vindo ao Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratorio \n");
     Lista *lista_manuntencao;
     lista_manuntencao = InicializaLista();
     lista_manuntencao = CriaLista();
@@ -14,7 +14,7 @@ int main()
 
     do
     {
-        printf("\n===== MENU =====\n");
+        printf("\n------------------------ MENU ---------------------------\n");
         printf("1 - Inserir uma Solicitacao de Manutencao no Sistema\n");
         printf("2 - Remover uma Solicitacao no Sistema\n");
         printf("3 - Consultar uma Solicitacao no Sistema\n");
@@ -22,6 +22,7 @@ int main()
         printf("5 - Exibir ordem de realizacao da manutencao no Sistema\n");
         printf("6 - Exibir todas as solicitacoes no Sistema\n");
         printf("0 - Finalizar/Sair\n");
+        printf("\n---------------------------------------------------------\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
@@ -36,45 +37,46 @@ int main()
                 scanf("%s", dados.codigoEquipamento);
 
                 printf("Nome do equipamento: ");
-                scanf(" %[^\n]", dados.nomeEquipamento);
+                scanf(" %s", dados.nomeEquipamento);
 
                 printf("Prioridade (1-Alta, 2-Media, 3-Baixa): ");
                 scanf("%d", &dados.prioridade);
 
                 printf("Periodo (dias): ");
                 scanf("%d", &dados.periodo);
-
+                printf("\n---------------------------------------------------------\n");
                 inserir(lista_manuntencao, dados);
                 break;
 
             case 2:
-                // TODO: chamar remover(...)
+
                 printf("Opcao Remover ainda nao implementada.\n");
                 break;
 
             case 3:
-                // TODO: chamar consultar(...)
+
                 printf("Opcao Consultar ainda nao implementada.\n");
                 break;
 
             case 4:
-                // TODO: chamar alterar(...)
+
                 printf("Opcao Alterar ainda nao implementada.\n");
                 break;
 
             case 5:
-                // TODO: chamar exibirOrdem(...)
+
                 printf("Opcao Exibir Ordem ainda nao implementada.\n");
                 break;
 
             case 6:
-                // TODO: chamar exibirTodas(...)
-                printf("Opcao Exibir Todas ainda nao implementada.\n");
+                printf("\n---------------------------------------------------------\n");
+                printf("\n----------Lista de Solicitacoes Ativas no Sistema------------\n");
+                ImprimeLista(lista_manuntencao);
                 break;
 
             case 0:
                 printf("Encerrando o programa...\n");
-                // TODO: chamar funcao de liberar memoria antes de sair
+
                 break;
 
             default:
