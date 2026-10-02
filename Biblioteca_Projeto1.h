@@ -86,6 +86,50 @@ void inserir(Lista *L, Manutencao dados)
 }
 
 
+void remover(Lista *L, int codigo)
+{
+    No *atual = L->inicio;
+    No *anterior = NULL;
+    int encontrado = 0;
+
+    while (atual != NULL && atual->info.codigoSolicitacao != codigo) // anda enquanto nao achar o codigo
+    {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (atual != NULL)
+    {
+        encontrado = 1;
+    }
+
+    if (encontrado == 0)
+    {
+        printf("Erro: codigo de solicitacao %d nao encontrado.\n", codigo);
+    }
+    else
+    {
+        if (anterior == NULL)          // remover o primeiro no da lista
+        {
+            L->inicio = atual->prox;
+        }
+        else                            // remover do meio ou do fim
+        {
+            anterior->prox = atual->prox;
+        }
+
+        free(atual);
+
+        printf("\n-----------------------------------------------------------------\n");
+        printf("      Solicitacao removida com sucesso!");
+        printf("\n-----------------------------------------------------------------\n");
+    }
+}
+
+
+
+
+
 void ImprimeLista(Lista *L)
 {
     No *aux;

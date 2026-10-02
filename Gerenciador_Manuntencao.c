@@ -50,7 +50,10 @@ int main()
 
             case 2:
 
-                printf("Opcao Remover ainda nao implementada.\n");
+                int codigoRemover;
+                printf("Digite o codigo da solicitacao que deseja remover: ");
+                scanf("%d", &codigoRemover);
+                remover(lista_manuntencao, codigoRemover);
                 break;
 
             case 3:
