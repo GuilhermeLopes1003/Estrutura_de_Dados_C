@@ -39,94 +39,211 @@ Lista* CriaLista()
 }
 
 
-void inserir(Lista *L, Manutencao dados)
+void inserir(Lista *L, Manutencao d)
 {
-    No *novo = (No *) malloc(sizeof(No));
+    int val = 0;
 
-    novo->info = dados;
-    novo->prox = NULL;
-
-    No *atual = L->inicio;
-    No *anterior = NULL;
-    int duplicado = 0;
-
-    while (atual != NULL && atual->info.codigoSolicitacao < dados.codigoSolicitacao) // enquanto é menor, anda até ser falso
-        {
-            anterior = atual;
-            atual = atual->prox;
-        }
-
-    if (atual != NULL && atual->info.codigoSolicitacao == dados.codigoSolicitacao) // checagem inserçao duplicada
-        {
-            duplicado = 1;
-        }
-
-    if (duplicado == 1)
-        {
-            printf("Erro: codigo de solicitacao %d ja existe.\n", dados.codigoSolicitacao);
-            free(novo);
-        }
-    else
+    if (d.prioridade == 1 && d.periodo >= 1 && d.periodo <= 7)
     {
-        if (anterior == NULL)  // condição inserir no inicio da lista
+        val = 1;
+    }
+    else if (d.prioridade == 2 && d.periodo >= 1 && d.periodo <= 15)
+    {
+        val = 1;
+    }
+    else if (d.prioridade == 3 && d.periodo >= 1 && d.periodo <= 20)
+    {
+        val = 1;
+    }
+
+    if (val == 1)
+    {
+        No *novo = (No *) malloc(sizeof(No));
+
+        if (novo == NULL)
+        {
+            printf("Erro na alocacao de memoria!\n");
+        }
+        else
+        {
+            novo->info = d;
+            novo->prox = NULL;
+
+            No *aux = L->inicio;
+            No *ant = NULL;
+            int dup = 0;
+
+            while (aux != NULL && aux->info.codigoSolicitacao < d.codigoSolicitacao) 
             {
-                novo->prox = L->inicio;
-                L->inicio = novo;
+                ant = aux;
+                aux = aux->prox;
             }
-        else                          // condição inserir no meio ou no fim da lista
-        {
-                novo->prox = atual;
-                anterior->prox = novo;
+
+            if (aux != NULL && aux->info.codigoSolicitacao == d.codigoSolicitacao)
+            {
+                dup = 1;
+            }
+
+            if (dup == 1)
+            {
+                printf("Erro: codigo %d ja existe.\n", d.codigoSolicitacao);
+                free(novo);
+            }
+            else
+            {
+                if (ant == NULL)
+                {
+                    novo->prox = L->inicio;
+                    L->inicio = novo;
+                }
+                else
+                {
+                    novo->prox = aux;
+                    ant->prox = novo;
+                }
+                printf("Solicitacao Inserida com Sucesso!\n");
+            }
         }
-    }
-
-    printf("\n-----------------------------------------------------------------\n");
-    printf("      Manuntencao do Equipamento Adicionado com Sucesso!");
-    printf("\n-----------------------------------------------------------------\n");
-}
-
-
-void remover(Lista *L, int codigo)
-{
-    No *atual = L->inicio;
-    No *anterior = NULL;
-    int encontrado = 0;
-
-    while (atual != NULL && atual->info.codigoSolicitacao != codigo) // anda enquanto nao achar o codigo
-    {
-        anterior = atual;
-        atual = atual->prox;
-    }
-
-    if (atual != NULL)
-    {
-        encontrado = 1;
-    }
-
-    if (encontrado == 0)
-    {
-        printf("Erro: codigo de solicitacao %d nao encontrado.\n", codigo);
     }
     else
     {
-        if (anterior == NULL)          // remover o primeiro no da lista
-        {
-            L->inicio = atual->prox;
-        }
-        else                            // remover do meio ou do fim
-        {
-            anterior->prox = atual->prox;
-        }
-
-        free(atual);
-
-        printf("\n-----------------------------------------------------------------\n");
-        printf("      Solicitacao removida com sucesso!");
-        printf("\n-----------------------------------------------------------------\n");
+        printf("Erro: valores invalidos para prioridade ou periodo. Solicitacao recusada!\n");
     }
 }
 
 
+
+
+
+void consultar(Lista *L, int cod)
+{
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia!\n");
+        return;
+    }
+
+    No *aux = L->inicio;
+
+    while (aux != NULL && aux->info.codigoSolicitacao < cod)
+    {
+        aux = aux->prox;
+    }
+
+    if (aux != NULL && aux->info.codigoSolicitacao == cod)
+    {
+        printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
+        printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
+        printf("Nome: %s\n", aux->info.nomeEquipamento);
+        printf("Prioridade: %d\n", aux->info.prioridade);
+        printf("Periodo: %d dias\n", aux->info.periodo);
+    }
+    else
+    {
+        printf("Codigo %d nao encontrado.\n", cod);
+    }
+}
+
+
+void remover(Lista *L, int cod)
+{
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia!\n");
+    }
+    else
+    {
+        No *aux = L->inicio;
+        No *ant = NULL;
+
+        while (aux != NULL && aux->info.codigoSolicitacao != cod)
+        {
+            ant = aux;
+            aux = aux->prox;
+        }
+
+        if (aux == NULL)
+        {
+            printf("Codigo %d nao encontrado.\n", cod);
+        }
+        else
+        {
+            if (ant == NULL)
+            {
+                L->inicio = aux->prox;
+            }
+            else
+            {
+                ant->prox = aux->prox;
+            }
+
+            free(aux);
+            printf("Removido com sucesso!\n");
+        }
+    }
+}
+
+
+void alterar(Lista *L, int cod)
+{
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia!\n");
+    }
+    else
+    {
+        No *aux = L->inicio;
+
+        while (aux != NULL && aux->info.codigoSolicitacao < cod)
+        {
+            aux = aux->prox;
+        }
+
+        if (aux != NULL && aux->info.codigoSolicitacao == cod)
+        {
+            int p, per, val = 0;
+
+            printf("\n--- Valores Atuais ---\n");
+            printf("Prioridade Atual: %d\n", aux->info.prioridade);
+            printf("Periodo Atual: %d dias\n", aux->info.periodo);
+            printf("----------------------\n\n");
+
+            printf("Insira a nova prioridade desejada (1-Alta, 2-Media, 3-Baixa): ");
+            scanf("%d", &p);
+
+            printf("Insira o novo periodo desejado (dias): ");
+            scanf("%d", &per);
+
+            if (p == 1 && per >= 1 && per <= 7)
+            {
+                val = 1;
+            }
+            else if (p == 2 && per >= 1 && per <= 15)
+            {
+                val = 1;
+            }
+            else if (p == 3 && per >= 1 && per <= 20)
+            {
+                val = 1;
+            }
+
+            if (val == 1)
+            {
+                aux->info.prioridade = p;
+                aux->info.periodo = per;
+                printf("Alterado com sucesso!\n");
+            }
+            else
+            {
+                printf("Erro: valores invalidos para prioridade ou periodo.\n");
+            }
+        }
+        else
+        {
+            printf("Codigo %d nao encontrado.\n", cod);
+        }
+    }
+}
 
 
 

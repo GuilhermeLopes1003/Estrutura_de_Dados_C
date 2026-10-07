@@ -4,16 +4,17 @@
 
 int main()
 {
-    printf("\n\n Bem Vindo ao Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratorio \n");
-    Lista *lista_manuntencao;
-    lista_manuntencao = InicializaLista();
-    lista_manuntencao = CriaLista();
+    Lista *L;
+    L = CriaLista();
 
-    int opcao;
-    Manutencao dados;
+    int op, cod;
+    Manutencao d;
 
     do
     {
+        system("cls");
+
+        printf("\n Bem Vindo ao Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratorio \n");
         printf("\n------------------------ MENU ---------------------------\n");
         printf("1 - Inserir uma Solicitacao de Manutencao no Sistema\n");
         printf("2 - Remover uma Solicitacao no Sistema\n");
@@ -24,70 +25,83 @@ int main()
         printf("0 - Finalizar/Sair\n");
         printf("\n---------------------------------------------------------\n");
         printf("Escolha uma opcao: ");
-        scanf("%d", &opcao);
+        scanf("%d", &op);
 
-        switch (opcao)
+        system("cls"); 
+
+        switch (op)
         {
             case 1:
-
                 printf("Codigo da solicitacao: ");
-                scanf("%d", &dados.codigoSolicitacao);
+                scanf("%d", &d.codigoSolicitacao);
 
                 printf("Codigo do equipamento: ");
-                scanf("%s", dados.codigoEquipamento);
+                scanf(" %s", d.codigoEquipamento);
 
                 printf("Nome do equipamento: ");
-                scanf(" %s", dados.nomeEquipamento);
+                scanf(" %20[^\n]", d.nomeEquipamento); 
 
                 printf("Prioridade (1-Alta, 2-Media, 3-Baixa): ");
-                scanf("%d", &dados.prioridade);
+                scanf("%d", &d.prioridade);
 
                 printf("Periodo (dias): ");
-                scanf("%d", &dados.periodo);
+                scanf("%d", &d.periodo);
                 printf("\n---------------------------------------------------------\n");
-                inserir(lista_manuntencao, dados);
+                
+                inserir(L, d);
+                printf("\n");
+                system("pause");
                 break;
 
             case 2:
-
-                int codigoRemover;
-                printf("Digite o codigo da solicitacao que deseja remover: ");
-                scanf("%d", &codigoRemover);
-                remover(lista_manuntencao, codigoRemover);
+                printf("Digite o codigo para remover: ");
+                scanf("%d", &cod);
+                remover(L, cod);
+                printf("\n");
+                system("pause");
                 break;
 
             case 3:
-
-                printf("Opcao Consultar ainda nao implementada.\n");
+                printf("Digite o codigo para consultar: ");
+                scanf("%d", &cod);
+                consultar(L, cod);
+                printf("\n");
+                system("pause");
                 break;
 
             case 4:
-
-                printf("Opcao Alterar ainda nao implementada.\n");
+                printf("Digite o codigo para alterar: ");
+                scanf("%d", &cod);
+                alterar(L, cod);
+                printf("\n");
+                system("pause");
                 break;
 
             case 5:
-
-                printf("Opcao Exibir Ordem ainda nao implementada.\n");
+                printf("Opcao exibir Ordem ainda nao implementada.\n");
+                printf("\n");
+                system("pause");
                 break;
 
             case 6:
-                printf("\n---------------------------------------------------------\n");
-                printf("\n----------Lista de Solicitacoes Ativas no Sistema------------\n");
-                ImprimeLista(lista_manuntencao);
+                printf("\n----------Lista de Solicitacoes Ativas no Sistema------------\n\n");
+                ImprimeLista(L);
+                printf("\n");
+                system("pause");
                 break;
 
             case 0:
                 printf("Encerrando o programa...\n");
-
                 break;
 
             default:
                 printf("Opcao invalida. Tente novamente.\n");
+                printf("\n");
+                system("pause");
                 break;
         }
 
-    } while (opcao != 0);
+    } while (op != 0);
 
     return 0;
 }
