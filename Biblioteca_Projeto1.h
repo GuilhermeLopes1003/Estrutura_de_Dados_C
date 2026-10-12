@@ -62,7 +62,7 @@ void inserir(Lista *L, Manutencao d)
 
         if (novo == NULL)
         {
-            printf("Erro na alocacao de memoria!\n");
+            printf("Erro na alocacao de memoria\n");
         }
         else
         {
@@ -101,13 +101,13 @@ void inserir(Lista *L, Manutencao d)
                     novo->prox = aux;
                     ant->prox = novo;
                 }
-                printf("Solicitacao Inserida com Sucesso!\n");
+                printf("Solicitacao Inserida com Sucesso\n");
             }
         }
     }
     else
     {
-        printf("Erro: valores invalidos para prioridade ou periodo. Solicitacao recusada!\n");
+        printf("Erro: valores invalidos para prioridade ou periodo. Solicitacao recusada\n");
     }
 }
 
@@ -116,7 +116,7 @@ void remover(Lista *L, int cod)
 {
     if (L == NULL || L->inicio == NULL)
     {
-        printf("Lista vazia!\n");
+        printf("Lista vazia\n");
     }
     else
     {
@@ -145,7 +145,7 @@ void remover(Lista *L, int cod)
             }
 
             free(aux);
-            printf("Removido com sucesso!\n");
+            printf("Removido com sucesso\n");
         }
     }
 }
@@ -156,7 +156,7 @@ void consultar(Lista *L, int cod)
 {
     if (L == NULL || L->inicio == NULL)
     {
-        printf("Lista vazia!\n");
+        printf("Lista vazia\n");
     }
     else
     {
@@ -189,7 +189,7 @@ void alterar(Lista *L, int cod)
 {
     if (L == NULL || L->inicio == NULL)
     {
-        printf("Lista vazia!\n");
+        printf("Lista vazia\n");
     }
     else
     {
@@ -232,7 +232,7 @@ void alterar(Lista *L, int cod)
             {
                 aux->info.prioridade = p;
                 aux->info.periodo = per;
-                printf("Alterado com sucesso!\n");
+                printf("Alterado com sucesso\n");
             }
             else
             {
@@ -252,7 +252,7 @@ void ImprimeLista(Lista *L)
 {
     if (L == NULL || L->inicio == NULL)
     {
-        printf("Lista vazia!\n");
+        printf("Lista vazia\n");
     }
     else
     {
