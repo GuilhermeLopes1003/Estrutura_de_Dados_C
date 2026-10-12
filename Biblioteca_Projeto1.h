@@ -250,23 +250,23 @@ void alterar(Lista *L, int cod)
 
 void ImprimeLista(Lista *L)
 {
-    No *aux;
-    aux = L->inicio;
-
-    if (aux == NULL) {
-        printf("A lista de manutencao esta vazia!!!.\n");
-        return;
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia!\n");
     }
-
-    while(aux != NULL) {
-        printf("Codigo da solicitacao: %d\n", aux->info.codigoSolicitacao);
-        printf("Codigo do equipamento: %s\n", aux->info.codigoEquipamento);
-        printf("Nome do equipamento:   %s\n", aux->info.nomeEquipamento);
-        printf("Prioridade:            %d\n", aux->info.prioridade);
-        printf("Periodo (dias):        %d\n", aux->info.periodo);
-        printf("---------------------------------------------------------\n");
-
-        aux = aux->prox;
+    else
+    {
+        No *aux = L->inicio;
+        while (aux != NULL)
+        {
+            printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
+            printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
+            printf("Nome: %s\n", aux->info.nomeEquipamento);
+            printf("Prioridade: %d\n", aux->info.prioridade);
+            printf("Periodo: %d dias\n", aux->info.periodo);
+            printf("-----------------------------------------\n");
+            aux = aux->prox;
+        }
     }
 }
 
