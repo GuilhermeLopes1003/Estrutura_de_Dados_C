@@ -112,39 +112,6 @@ void inserir(Lista *L, Manutencao d)
 }
 
 
-
-
-
-void consultar(Lista *L, int cod)
-{
-    if (L == NULL || L->inicio == NULL)
-    {
-        printf("Lista vazia!\n");
-        return;
-    }
-
-    No *aux = L->inicio;
-
-    while (aux != NULL && aux->info.codigoSolicitacao < cod)
-    {
-        aux = aux->prox;
-    }
-
-    if (aux != NULL && aux->info.codigoSolicitacao == cod)
-    {
-        printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
-        printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
-        printf("Nome: %s\n", aux->info.nomeEquipamento);
-        printf("Prioridade: %d\n", aux->info.prioridade);
-        printf("Periodo: %d dias\n", aux->info.periodo);
-    }
-    else
-    {
-        printf("Codigo %d nao encontrado.\n", cod);
-    }
-}
-
-
 void remover(Lista *L, int cod)
 {
     if (L == NULL || L->inicio == NULL)
@@ -182,6 +149,40 @@ void remover(Lista *L, int cod)
         }
     }
 }
+
+
+
+void consultar(Lista *L, int cod)
+{
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia!\n");
+    }
+    else
+    {
+        No *aux = L->inicio;
+
+        while (aux != NULL && aux->info.codigoSolicitacao < cod)
+        {
+            aux = aux->prox;
+        }
+
+        if (aux != NULL && aux->info.codigoSolicitacao == cod)
+        {
+            printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
+            printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
+            printf("Nome: %s\n", aux->info.nomeEquipamento);
+            printf("Prioridade: %d\n", aux->info.prioridade);
+            printf("Periodo: %d dias\n", aux->info.periodo);
+        }
+        else
+        {
+            printf("Codigo %d nao encontrado.\n", cod);
+        }
+    }
+}
+
+
 
 
 void alterar(Lista *L, int cod)
