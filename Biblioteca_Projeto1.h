@@ -38,6 +38,20 @@ Lista* CriaLista()
     return aux;
 }
 
+void LiberaLista(Lista *L)
+{
+    No *aux = L->inicio;
+    No *temp;
+    
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    free(L);
+}
+
 
 void inserir(Lista *L, Manutencao d)
 {
@@ -246,8 +260,6 @@ void alterar(Lista *L, int cod)
     }
 }
 
-
-
 void ImprimeLista(Lista *L)
 {
     if (L == NULL || L->inicio == NULL)
@@ -267,6 +279,90 @@ void ImprimeLista(Lista *L)
             printf("-----------------------------------------\n");
             aux = aux->prox;
         }
+    }
+}
+
+
+
+void inserirOrdemUrgencia(Lista *L_urgencia, Manutencao d)
+{
+    No *novo = (No *) malloc(sizeof(No));
+
+    if (novo == NULL)
+    {
+        printf("Erro na alocacao de memoria\n");
+    }
+    else
+    {
+        novo->info = d;
+        novo->prox = NULL;
+
+        No *aux = L_urgencia->inicio;
+        No *ant = NULL;
+        int avanca = 1;
+
+        while (aux != NULL && avanca == 1)
+        {
+            avanca = 0;
+
+            if (aux->info.prioridade < d.prioridade)
+            {
+                avanca = 1;
+            }
+            else if (aux->info.prioridade == d.prioridade)
+            {
+                if (aux->info.periodo < d.periodo)
+                {
+                    avanca = 1;
+                }
+                else if (aux->info.periodo == d.periodo &&
+                         aux->info.codigoSolicitacao < d.codigoSolicitacao)
+                {
+                    avanca = 1;
+                }
+            }
+
+            if (avanca == 1)
+            {
+                ant = aux;
+                aux = aux->prox;
+            }
+        }
+
+        if (ant == NULL)
+        {
+            novo->prox = L_urgencia->inicio;
+            L_urgencia->inicio = novo;
+        }
+        else
+        {
+            novo->prox = aux;
+            ant->prox = novo;
+        }
+    }
+}
+
+
+void exibirOrdemManutencao(Lista *L)
+{
+    if (L == NULL || L->inicio == NULL)
+    {
+        printf("Lista vazia\n");
+    }
+    else
+    {
+        Lista *L_urgencia = CriaLista();
+        No *aux = L->inicio;
+
+        while (aux != NULL)
+        {
+            inserirOrdemUrgencia(L_urgencia, aux->info);
+            aux = aux->prox;
+        }
+
+        printf("\n------- Ordem de Realizacao da Manutencao -------\n");
+        ImprimeLista(L_urgencia);
+        LiberaLista(L_urgencia);
     }
 }
 

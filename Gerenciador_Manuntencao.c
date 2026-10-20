@@ -78,7 +78,7 @@ int main()
                 break;
 
             case 5:
-                printf("Opcao exibir Ordem ainda nao implementada.\n");
+                exibirOrdemManutencao(L);
                 printf("\n");
                 system("pause");
                 break;
@@ -92,6 +92,7 @@ int main()
 
             case 0:
                 printf("Encerrando o programa...\n");
+                LiberaLista(L);
                 break;
 
             default:
