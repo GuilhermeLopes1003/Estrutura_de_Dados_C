@@ -1,10 +1,173 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <locale.h>
 #include "Biblioteca_Projeto1.h"
+
+void limpaBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int lerCodigoSolicitacao()
+{
+    int cod = 0;
+    int val = 0;
+
+    printf("Código da solicitação (4 dígitos, 1000 a 9999): ");
+    do
+    {
+        if (scanf("%d", &cod) != 1)
+        {
+            limpaBuffer();
+            cod = 0;
+        }
+        else
+        {
+            limpaBuffer();
+        }
+
+        if (cod >= 1000 && cod <= 9999)
+        {
+            val = 1;
+        }
+        else
+        {
+            printf("Código inválido. Digite novamente (1000 a 9999): ");
+        }
+    } while (val == 0);
+
+    return cod;
+}
+
+void lerCodigoEquipamento(char *codEq)
+{
+    int val = 0;
+
+    printf("Código do equipamento (3 letras e 3 números, ex: OSC023): ");
+    do
+    {
+        scanf("%9s", codEq);
+        limpaBuffer();
+
+        if (strlen(codEq) == 6 &&
+            isalpha(codEq[0]) && isalpha(codEq[1]) && isalpha(codEq[2]) &&
+            isdigit(codEq[3]) && isdigit(codEq[4]) && isdigit(codEq[5]))
+        {
+            codEq[0] = toupper(codEq[0]);
+            codEq[1] = toupper(codEq[1]);
+            codEq[2] = toupper(codEq[2]);
+            val = 1;
+        }
+        else
+        {
+            printf("Formato inválido. Digite 3 letras e 3 dígitos (ex: OSC023): ");
+        }
+    } while (val == 0);
+}
+
+void lerNomeEquipamento(char *nome)
+{
+    int val = 0;
+
+    printf("Nome do equipamento (máximo 20 caracteres): ");
+    do
+    {
+        nome[0] = '\0';
+        scanf(" %20[^\n]", nome);
+        limpaBuffer();
+
+        if (strlen(nome) > 0)
+        {
+            val = 1;
+        }
+        else
+        {
+            printf("Nome inválido. Digite novamente: ");
+        }
+    } while (val == 0);
+}
+
+int lerPrioridade()
+{
+    int p = 0;
+    int val = 0;
+
+    printf("Prioridade (1-Alta, 2-Média, 3-Baixa): ");
+    do
+    {
+        if (scanf("%d", &p) != 1)
+        {
+            limpaBuffer();
+            p = 0;
+        }
+        else
+        {
+            limpaBuffer();
+        }
+
+        if (p >= 1 && p <= 3)
+        {
+            val = 1;
+        }
+        else
+        {
+            printf("Prioridade inválida. Escolha 1, 2 ou 3: ");
+        }
+    } while (val == 0);
+
+    return p;
+}
+
+int lerPeriodo(int p)
+{
+    int per = 0;
+    int max = 20;
+    int val = 0;
+
+    if (p == 1)
+    {
+        max = 7;
+    }
+    else if (p == 2)
+    {
+        max = 15;
+    }
+
+    printf("Período em dias (1 a %d): ", max);
+    do
+    {
+        if (scanf("%d", &per) != 1)
+        {
+            limpaBuffer();
+            per = 0;
+        }
+        else
+        {
+            limpaBuffer();
+        }
+
+        if (per >= 1 && per <= max)
+        {
+            val = 1;
+        }
+        else
+        {
+            printf("Período inválido para prioridade %d. Digite entre 1 e %d dias: ", p, max);
+        }
+    } while (val == 0);
+
+    return per;
+}
 
 int main()
 {
+    setlocale(LC_ALL, "Portuguese");
+
     Lista *L;
+    L = InicializaLista();
     L = CriaLista();
 
     int op, cod;
@@ -13,93 +176,82 @@ int main()
     do
     {
         system("cls");
-
-        printf("\n Bem Vindo ao Sistema de Gerenciamento de Manuntencao de Equipamentos de um Laboratorio \n");
+        printf("\n Sistema de Gerenciamento de Manutenção de Equipamentos de Laboratório \n");
         printf("\n------------------------ MENU ---------------------------\n");
-        printf("1 - Inserir uma Solicitacao de Manutencao no Sistema\n");
-        printf("2 - Remover uma Solicitacao no Sistema\n");
-        printf("3 - Consultar uma Solicitacao no Sistema\n");
-        printf("4 - Alterar prioridade e/ou periodo no Sistema\n");
-        printf("5 - Exibir ordem de realizacao da manutencao no Sistema\n");
-        printf("6 - Exibir todas as solicitacoes no Sistema\n");
-        printf("0 - Finalizar/Sair\n");
-        printf("\n---------------------------------------------------------\n");
-        printf("Escolha uma opcao: ");
-        scanf("%d", &op);
+        printf("1 - Inserir uma Solicitação\n");
+        printf("2 - Remover uma Solicitação\n");
+        printf("3 - Consultar uma Solicitação\n");
+        printf("4 - Alterar prioridade/período\n");
+        printf("5 - Exibir ordem de realização da manutenção\n");
+        printf("6 - Exibir todas as solicitações\n");
+        printf("0 - Sair\n");
+        printf("---------------------------------------------------------\n");
+        printf("Escolha uma opção: ");
 
-        system("cls"); 
+        if (scanf("%d", &op) != 1)
+        {
+            limpaBuffer();
+            op = -1;
+        }
+        else
+        {
+            limpaBuffer();
+        }
 
         switch (op)
         {
             case 1:
-                printf("Codigo da solicitacao: ");
-                scanf("%d", &d.codigoSolicitacao);
+                printf("\n--- Nova Solicitação ---\n");
+                d.codigoSolicitacao = lerCodigoSolicitacao();
+                lerCodigoEquipamento(d.codigoEquipamento);
+                lerNomeEquipamento(d.nomeEquipamento);
+                d.prioridade = lerPrioridade();
+                d.periodo = lerPeriodo(d.prioridade);
 
-                printf("Codigo do equipamento: ");
-                scanf(" %s", d.codigoEquipamento);
-
-                printf("Nome do equipamento: ");
-                scanf(" %20[^\n]", d.nomeEquipamento); 
-
-                printf("Prioridade (1-Alta, 2-Media, 3-Baixa): ");
-                scanf("%d", &d.prioridade);
-
-                printf("Periodo (dias): ");
-                scanf("%d", &d.periodo);
-                printf("\n---------------------------------------------------------\n");
-                
                 inserir(L, d);
-                printf("\n");
-                system("pause");
                 break;
 
             case 2:
-                printf("Digite o codigo para remover: ");
-                scanf("%d", &cod);
+                printf("\n--- Remover Solicitação ---\n");
+                cod = lerCodigoSolicitacao();
                 remover(L, cod);
-                printf("\n");
-                system("pause");
                 break;
 
             case 3:
-                printf("Digite o codigo para consultar: ");
-                scanf("%d", &cod);
+                printf("\n--- Consultar Solicitação ---\n");
+                cod = lerCodigoSolicitacao();
                 consultar(L, cod);
-                printf("\n");
-                system("pause");
                 break;
 
             case 4:
-                printf("Digite o codigo para alterar: ");
-                scanf("%d", &cod);
+                printf("\n--- Alterar Solicitação ---\n");
+                cod = lerCodigoSolicitacao();
                 alterar(L, cod);
-                printf("\n");
-                system("pause");
                 break;
 
             case 5:
                 exibirOrdemManutencao(L);
-                printf("\n");
-                system("pause");
                 break;
 
             case 6:
-                printf("\n----------Lista de Solicitacoes Ativas no Sistema------------\n\n");
+                printf("\n--- Lista de Solicitações ---\n");
                 ImprimeLista(L);
-                printf("\n");
-                system("pause");
                 break;
 
             case 0:
-                printf("Encerrando o programa...\n");
+                printf("Encerrando o sistema...\n");
                 LiberaLista(L);
                 break;
 
             default:
-                printf("Opcao invalida. Tente novamente.\n");
-                printf("\n");
-                system("pause");
+                printf("Opção inválida.\n");
                 break;
+        }
+
+        if (op != 0)
+        {
+            printf("\n");
+            system("pause");
         }
 
     } while (op != 0);

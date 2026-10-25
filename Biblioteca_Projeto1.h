@@ -1,136 +1,93 @@
-#ifndef BIBLIOTECA_PROJETO1_H
-#define BIBLIOTECA_PROJETO1_H
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct manutencao
+typedef struct
 {
     int codigoSolicitacao;
-    char codigoEquipamento[7];
+    char codigoEquipamento[10];
     char nomeEquipamento[21];
     int prioridade;
     int periodo;
 } Manutencao;
 
-typedef struct no
+typedef struct No
 {
     Manutencao info;
-    struct no *prox;
+    struct No *prox;
 } No;
 
-typedef struct lista
+typedef struct
 {
     No *inicio;
 } Lista;
-
 
 Lista* InicializaLista()
 {
     return NULL;
 }
 
-
 Lista* CriaLista()
 {
-    Lista *aux;
-    aux = (Lista*)malloc(sizeof(Lista));
-
-    aux->inicio = NULL;
-
-    return aux;
+    Lista *L = (Lista *) malloc(sizeof(Lista));
+    L->inicio = NULL;
+    return L;
 }
-
-void LiberaLista(Lista *L)
-{
-    No *aux = L->inicio;
-    No *temp;
-    
-    while (aux != NULL)
-    {
-        temp = aux;
-        aux = aux->prox;
-        free(temp);
-    }
-    free(L);
-}
-
 
 void inserir(Lista *L, Manutencao d)
 {
-    int val = 0;
+    No *novo = (No *) malloc(sizeof(No));
 
-    if (d.prioridade == 1 && d.periodo >= 1 && d.periodo <= 7)
+    if (novo == NULL)
     {
-        val = 1;
-    }
-    else if (d.prioridade == 2 && d.periodo >= 1 && d.periodo <= 15)
-    {
-        val = 1;
-    }
-    else if (d.prioridade == 3 && d.periodo >= 1 && d.periodo <= 20)
-    {
-        val = 1;
-    }
-
-    if (val == 1)
-    {
-        No *novo = (No *) malloc(sizeof(No));
-
-        if (novo == NULL)
-        {
-            printf("Erro na alocacao de memoria\n");
-        }
-        else
-        {
-            novo->info = d;
-            novo->prox = NULL;
-
-            No *aux = L->inicio;
-            No *ant = NULL;
-            int dup = 0;
-
-            while (aux != NULL && aux->info.codigoSolicitacao < d.codigoSolicitacao) 
-            {
-                ant = aux;
-                aux = aux->prox;
-            }
-
-            if (aux != NULL && aux->info.codigoSolicitacao == d.codigoSolicitacao)
-            {
-                dup = 1;
-            }
-
-            if (dup == 1)
-            {
-                printf("Erro: codigo %d ja existe.\n", d.codigoSolicitacao);
-                free(novo);
-            }
-            else
-            {
-                if (ant == NULL)
-                {
-                    novo->prox = L->inicio;
-                    L->inicio = novo;
-                }
-                else
-                {
-                    novo->prox = aux;
-                    ant->prox = novo;
-                }
-                printf("Solicitacao Inserida com Sucesso\n");
-            }
-        }
+        printf("Erro de memória.\n");
     }
     else
     {
-        printf("Erro: valores invalidos para prioridade ou periodo. Solicitacao recusada\n");
+        novo->info = d;
+        novo->prox = NULL;
+
+        No *aux = L->inicio;
+        No *ant = NULL;
+        int dup = 0;
+
+        while (aux != NULL && aux->info.codigoSolicitacao < d.codigoSolicitacao)
+        {
+            ant = aux;
+            aux = aux->prox;
+        }
+
+        if (aux != NULL && aux->info.codigoSolicitacao == d.codigoSolicitacao)
+        {
+            dup = 1;
+        }
+
+        if (dup == 1)
+        {
+            printf("Erro: código %d já cadastrado.\n", d.codigoSolicitacao);
+            free(novo);
+        }
+        else
+        {
+            if (ant == NULL)
+            {
+                novo->prox = L->inicio;
+                L->inicio = novo;
+            }
+            else
+            {
+                novo->prox = aux;
+                ant->prox = novo;
+            }
+            printf("Solicitação inserida com sucesso.\n");
+        }
     }
 }
 
-
 void remover(Lista *L, int cod)
 {
-    if (L == NULL || L->inicio == NULL)
+    if (L->inicio == NULL)
     {
-        printf("Lista vazia\n");
+        printf("A lista está vazia.\n");
     }
     else
     {
@@ -145,7 +102,7 @@ void remover(Lista *L, int cod)
 
         if (aux == NULL)
         {
-            printf("Codigo %d nao encontrado.\n", cod);
+            printf("Código %d não encontrado.\n", cod);
         }
         else
         {
@@ -159,18 +116,16 @@ void remover(Lista *L, int cod)
             }
 
             free(aux);
-            printf("Removido com sucesso\n");
+            printf("Removido com sucesso.\n");
         }
     }
 }
-
-
 
 void consultar(Lista *L, int cod)
 {
-    if (L == NULL || L->inicio == NULL)
+    if (L->inicio == NULL)
     {
-        printf("Lista vazia\n");
+        printf("A lista está vazia.\n");
     }
     else
     {
@@ -183,27 +138,24 @@ void consultar(Lista *L, int cod)
 
         if (aux != NULL && aux->info.codigoSolicitacao == cod)
         {
-            printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
-            printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
+            printf("\nCód. Solicitação: %d\n", aux->info.codigoSolicitacao);
+            printf("Cód. Equipamento: %s\n", aux->info.codigoEquipamento);
             printf("Nome: %s\n", aux->info.nomeEquipamento);
             printf("Prioridade: %d\n", aux->info.prioridade);
-            printf("Periodo: %d dias\n", aux->info.periodo);
+            printf("Período: %d dias\n", aux->info.periodo);
         }
         else
         {
-            printf("Codigo %d nao encontrado.\n", cod);
+            printf("Código %d não encontrado.\n", cod);
         }
     }
 }
 
-
-
-
 void alterar(Lista *L, int cod)
 {
-    if (L == NULL || L->inicio == NULL)
+    if (L->inicio == NULL)
     {
-        printf("Lista vazia\n");
+        printf("A lista está vazia.\n");
     }
     else
     {
@@ -216,83 +168,93 @@ void alterar(Lista *L, int cod)
 
         if (aux != NULL && aux->info.codigoSolicitacao == cod)
         {
-            int p, per, val = 0;
+            int p = 0, per = 0, val = 0, c;
 
-            printf("\n--- Valores Atuais ---\n");
-            printf("Prioridade Atual: %d\n", aux->info.prioridade);
-            printf("Periodo Atual: %d dias\n", aux->info.periodo);
-            printf("----------------------\n\n");
+            do
+            {
+                printf("Nova Prioridade (1-Alta, 2-Média, 3-Baixa): ");
+                if (scanf("%d", &p) != 1)
+                {
+                    while ((c = getchar()) != '\n' && c != EOF);
+                    p = 0;
+                }
 
-            printf("Insira a nova prioridade desejada (1-Alta, 2-Media, 3-Baixa): ");
-            scanf("%d", &p);
+                printf("Novo Período (dias): ");
+                if (scanf("%d", &per) != 1)
+                {
+                    while ((c = getchar()) != '\n' && c != EOF);
+                    per = 0;
+                }
 
-            printf("Insira o novo periodo desejado (dias): ");
-            scanf("%d", &per);
+                if (p == 1 && per >= 1 && per <= 7)
+                {
+                    val = 1;
+                }
+                else if (p == 2 && per >= 1 && per <= 15)
+                {
+                    val = 1;
+                }
+                else if (p == 3 && per >= 1 && per <= 20)
+                {
+                    val = 1;
+                }
+                else
+                {
+                    printf("Valores inválidos para prioridade ou limite de dias. Tente novamente.\n");
+                }
+            } while (val == 0);
 
-            if (p == 1 && per >= 1 && per <= 7)
-            {
-                val = 1;
-            }
-            else if (p == 2 && per >= 1 && per <= 15)
-            {
-                val = 1;
-            }
-            else if (p == 3 && per >= 1 && per <= 20)
-            {
-                val = 1;
-            }
-
-            if (val == 1)
-            {
-                aux->info.prioridade = p;
-                aux->info.periodo = per;
-                printf("Alterado com sucesso\n");
-            }
-            else
-            {
-                printf("Erro: valores invalidos para prioridade ou periodo.\n");
-            }
+            aux->info.prioridade = p;
+            aux->info.periodo = per;
+            printf("Dados atualizados com sucesso.\n");
         }
         else
         {
-            printf("Codigo %d nao encontrado.\n", cod);
+            printf("Código %d não encontrado.\n", cod);
         }
     }
 }
 
 void ImprimeLista(Lista *L)
 {
-    if (L == NULL || L->inicio == NULL)
+    if (L->inicio == NULL)
     {
-        printf("Lista vazia\n");
+        printf("A lista está vazia.\n");
     }
     else
     {
         No *aux = L->inicio;
+
         while (aux != NULL)
         {
-            printf("\nCodigo Solicitacao: %d\n", aux->info.codigoSolicitacao);
-            printf("Codigo Equipamento: %s\n", aux->info.codigoEquipamento);
-            printf("Nome: %s\n", aux->info.nomeEquipamento);
-            printf("Prioridade: %d\n", aux->info.prioridade);
-            printf("Periodo: %d dias\n", aux->info.periodo);
-            printf("-----------------------------------------\n");
+            printf("\nCód. Solicitação: %d | Cód. Equip: %s | Nome: %s | Prioridade: %d | Período: %d dias",
+                   aux->info.codigoSolicitacao, aux->info.codigoEquipamento,
+                   aux->info.nomeEquipamento, aux->info.prioridade, aux->info.periodo);
             aux = aux->prox;
         }
+        printf("\n");
     }
 }
 
+void LiberaLista(Lista *L)
+{
+    No *aux = L->inicio;
+    No *temp;
 
+    while (aux != NULL)
+    {
+        temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+    free(L);
+}
 
 void inserirOrdemUrgencia(Lista *L_urgencia, Manutencao d)
 {
     No *novo = (No *) malloc(sizeof(No));
 
-    if (novo == NULL)
-    {
-        printf("Erro na alocacao de memoria\n");
-    }
-    else
+    if (novo != NULL)
     {
         novo->info = d;
         novo->prox = NULL;
@@ -315,10 +277,12 @@ void inserirOrdemUrgencia(Lista *L_urgencia, Manutencao d)
                 {
                     avanca = 1;
                 }
-                else if (aux->info.periodo == d.periodo &&
-                         aux->info.codigoSolicitacao < d.codigoSolicitacao)
+                else if (aux->info.periodo == d.periodo)
                 {
-                    avanca = 1;
+                    if (aux->info.codigoSolicitacao < d.codigoSolicitacao)
+                    {
+                        avanca = 1;
+                    }
                 }
             }
 
@@ -342,12 +306,11 @@ void inserirOrdemUrgencia(Lista *L_urgencia, Manutencao d)
     }
 }
 
-
 void exibirOrdemManutencao(Lista *L)
 {
-    if (L == NULL || L->inicio == NULL)
+    if (L->inicio == NULL)
     {
-        printf("Lista vazia\n");
+        printf("A lista está vazia.\n");
     }
     else
     {
@@ -360,10 +323,9 @@ void exibirOrdemManutencao(Lista *L)
             aux = aux->prox;
         }
 
-        printf("\n------- Ordem de Realizacao da Manutencao -------\n");
+        printf("\n--- Ordem de Realização da Manutenção ---\n");
         ImprimeLista(L_urgencia);
+
         LiberaLista(L_urgencia);
     }
 }
-
-#endif
